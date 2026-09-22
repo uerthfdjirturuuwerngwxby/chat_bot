@@ -6,3 +6,5 @@ langchain-community
 pypdf
 pymongo
 python-dotenv
+groq
+python-docx
