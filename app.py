@@ -1,10 +1,13 @@
 import os
+import tempfile
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from gemini_utils import extract_text_from_document, get_summary, get_chat_answer
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
+# Vercel Functions have a read-only project filesystem. Temporary files must
+# be stored under the system temp directory ("/tmp" on Vercel).
+UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'insightflow_uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 chat_context = {"text": ""}  # Shared across sessions (for demo)

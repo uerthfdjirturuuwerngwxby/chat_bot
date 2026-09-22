@@ -10,13 +10,14 @@ from groq import Groq
 load_dotenv()
 
 groq_api_key = os.getenv("GROQ_API_KEY")
-if not groq_api_key:
-    raise RuntimeError(
-        "Missing Groq API key. Set GROQ_API_KEY in your .env file."
-    )
-
 groq_model = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
-client = Groq(api_key=groq_api_key)
+
+def get_groq_client():
+    if not groq_api_key:
+        raise RuntimeError(
+            "Missing GROQ_API_KEY. Add it in Vercel Project Settings → Environment Variables."
+        )
+    return Groq(api_key=groq_api_key)
 
 # Extract text from a PDF
 def extract_text_from_pdf(pdf_path):
@@ -66,7 +67,7 @@ def get_summary(text, length='medium', style='concise'):
             )
         }
     ]
-    response = client.chat.completions.create(
+    response = get_groq_client().chat.completions.create(
         model=groq_model,
         messages=messages,
         temperature=0.7,
@@ -98,7 +99,7 @@ def get_chat_answer(context_text, user_question):
             )
         }
     ]
-    response = client.chat.completions.create(
+    response = get_groq_client().chat.completions.create(
         model=groq_model,
         messages=messages,
         temperature=0.68,
