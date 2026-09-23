@@ -4,6 +4,7 @@ google-api-python-client
 langchain
 langchain-community
 pypdf
+PyMuPDF
 pymongo
 python-dotenv
 groq
